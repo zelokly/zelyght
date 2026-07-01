@@ -162,6 +162,7 @@ section{padding:5rem 2.5rem}
    - .g-third   → 1/3 largeur, crop 3:2
    - .g-full    → pleine largeur, cover sans bordures (APACH)
    - .g-half    → 1/2 largeur, crop 1200×650 (ratio ≈ 1.85:1)
+   Cette structure est conservée à l'identique sur mobile.
 */
 .projects-grid{
   display:grid;
@@ -298,6 +299,9 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 
 /* ══════════════════════════════
    RESPONSIVE MOBILE (≤768px)
+   NOTE : la grille des projets (.projects-grid, .g-cinema, .g-third,
+   .g-full, .g-half) N'EST PAS surchargée ici : elle reste identique
+   au desktop, comme demandé.
    ══════════════════════════════ */
 @media(max-width:768px){
   /* Nav */
@@ -318,16 +322,6 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   /* Services : une colonne */
   .services-grid{grid-template-columns:1fr;gap:1px}
 
-  /* Grille projets mobile : tout en pleine largeur */
-  .projects-grid{
-    grid-template-columns:1fr 1fr;
-    gap:4px;
-  }
-  .g-cinema{grid-column:span 2;aspect-ratio:16/9}
-  .g-third{grid-column:span 1;aspect-ratio:3/2}
-  .g-full{grid-column:span 2;aspect-ratio:16/9}
-  .g-half{grid-column:span 1;aspect-ratio:16/9}
-
   /* About : une colonne, photo réduite */
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
   .photo-wrap{aspect-ratio:4/3;max-height:280px}
@@ -339,8 +333,6 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 }
 
 @media(max-width:480px){
-  .projects-grid{grid-template-columns:1fr;gap:4px}
-  .g-cinema,.g-third,.g-full,.g-half{grid-column:span 1;aspect-ratio:16/9}
   .stats{grid-template-columns:1fr 1fr;gap:1rem}
   .projet-meta{grid-template-columns:1fr 1fr}
 }
@@ -613,7 +605,6 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   <p class="label">About</p>
   <div class="about-grid">
     <div class="photo-wrap">
-      <!-- Remplace par : <img src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/pfp%20zelok.png" style="width:100%;height:100%;object-fit:cover;display:block"> -->
       <img src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/pfp%20zelok.png"
      alt="Photo de Zelyok"
      style="width:100%;height:100%;object-fit:cover;display:block;">
@@ -658,7 +649,7 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 
 <script>
 // ══════════════════════════════════════
-// 1. LAZY LOADING + HOVER PLAY
+// 1. LAZY LOADING + HOVER PLAY (desktop) + CENTER PLAY (mobile/tactile)
 // ══════════════════════════════════════
 (function() {
 
@@ -672,22 +663,27 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
     return false; // déjà chargée
   }
 
-  // Hover sur la carte : charge si besoin puis joue
+  function playVideo(video) {
+    var justLoaded = loadVideo(video);
+    if (justLoaded) {
+      video.addEventListener('canplay', function onCanPlay() {
+        video.play().catch(function(){});
+        video.removeEventListener('canplay', onCanPlay);
+      });
+    } else {
+      video.play().catch(function(){});
+    }
+  }
+
+  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+  // Hover sur la carte (desktop / souris) : charge si besoin puis joue
   document.querySelectorAll('.pcard').forEach(function(card) {
     var video = card.querySelector('.pvideo');
     if (!video) return;
 
     card.addEventListener('mouseenter', function() {
-      var justLoaded = loadVideo(video);
-      if (justLoaded) {
-        // Attend que les données soient prêtes avant de jouer
-        video.addEventListener('canplay', function onCanPlay() {
-          video.play().catch(function(){});
-          video.removeEventListener('canplay', onCanPlay);
-        });
-      } else {
-        video.play().catch(function(){});
-      }
+      playVideo(video);
     });
 
     card.addEventListener('mouseleave', function() {
@@ -710,13 +706,28 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
     lazyIO.observe(v);
   });
 
-})();
+  // Sur tactile : quand une carte passe au centre de l'écran en scrollant,
+  // sa vidéo se lance automatiquement (équivalent du hover souris),
+  // et se coupe quand elle quitte cette zone centrale.
+  if (isTouch) {
+    var centerIO = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        var video = entry.target.querySelector('.pvideo');
+        if (!video) return;
+        if (entry.isIntersecting) {
+          playVideo(video);
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+      });
+    }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
 
-  // Supprime les onmouseenter/onmouseleave inline pour éviter les doublons
-  document.querySelectorAll('.pvideo').forEach(function(v) {
-    v.removeAttribute('onmouseenter');
-    v.removeAttribute('onmouseleave');
-  });
+    document.querySelectorAll('.pcard').forEach(function(card) {
+      centerIO.observe(card);
+    });
+  }
+
 })();
 
 // ══════════════════════════════════════
