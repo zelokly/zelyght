@@ -337,6 +337,54 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   .projet-meta{grid-template-columns:1fr 1fr}
 }
 
+/* ══════════════════════════════════════
+   ANIMATIONS SCROLL
+   - Les éléments apparaissent en fondu + légère montée au scroll
+   - Les éléments qui quittent le viewport vers le haut se blurrent
+   ══════════════════════════════════════ */
+
+/* État initial avant apparition */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.25, 0, 0.1, 1),
+    transform 0.75s cubic-bezier(0.25, 0, 0.1, 1),
+    filter 0.75s cubic-bezier(0.25, 0, 0.1, 1);
+  filter: blur(4px);
+  will-change: opacity, transform, filter;
+}
+
+/* Visible — fondu entrant */
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+/* Sorti par le haut — blur sortant */
+.reveal.above {
+  opacity: 0;
+  transform: translateY(-16px);
+  filter: blur(8px);
+  transition:
+    opacity 0.5s cubic-bezier(0.25, 0, 0.1, 1),
+    transform 0.5s cubic-bezier(0.25, 0, 0.1, 1),
+    filter 0.5s cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+/* Délais en cascade pour les grilles et cartes */
+.reveal-group > *      { transition-delay: 0ms }
+.reveal-group > *:nth-child(1) { transition-delay: 0ms }
+.reveal-group > *:nth-child(2) { transition-delay: 80ms }
+.reveal-group > *:nth-child(3) { transition-delay: 160ms }
+.reveal-group > *:nth-child(4) { transition-delay: 240ms }
+.reveal-group > *:nth-child(5) { transition-delay: 320ms }
+.reveal-group > *:nth-child(6) { transition-delay: 400ms }
+</style>
+</head>
+<body>
+
 <!-- ── MENU MOBILE ── -->
 <div class="mob-menu" id="mobMenu">
   <a href="#services" onclick="closeMob()">Services</a>
