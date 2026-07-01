@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zelyght</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="logo.png">
+
+<!--
+╔══════════════════════════════════════════════════════════════╗
+║  GUIDE DE MODIFICATION RAPIDE                                ║
+╠══════════════════════════════════════════════════════════════╣
+║  Ouvre dans Bloc-notes → CTRL+F pour chercher               ║
+║                                                              ║
+║  ✏️  TEXTES À CHANGER :                                      ║
+║  "Nancy"              → ta ville                             ║
+║  "[Ton Prénom]"       → ton prénom                           ║
+║  "[X]"               → tes années d'expérience              ║
+║  "contact@zelyght.fr" → ton vrai email                       ║
+║  "+50" / "5 ans"     → tes vraies stats                     ║
+║  href="#"            → tes liens réseaux sociaux            ║
+║                                                              ║
+║  🎬  POUR CHAQUE PROJET :                                    ║
+║  data-titre="..."    → titre affiché                        ║
+║  data-cat="..."      → catégorie                            ║
+║  data-client="..."   → nom du client                        ║
+║  data-annee="..."    → année                                ║
+║  data-desc="..."     → description (page projet)            ║
+║                                                              ║
+║  🖼️  PHOTO DE PROFIL :                                       ║
+║  Cherche "ta photo ici" et remplace par :                   ║
+║  <img src="maphoto.jpg" style="width:100%;height:100%;      ║
+║  object-fit:cover;display:block">                           ║
+╚══════════════════════════════════════════════════════════════╝
+-->
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --fond:#0a0a0a;
+  --fond2:#111111;
+  --fond3:#1a1a1a;
+  --blanc:#ffffff;
+  --blanc-dim:#e5e5e5;
+  --muted:#8a8a8a;
+  --muted2:#4a4a4a;
+  --line:#222222;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--fond);
+  color:var(--blanc);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.2rem 2.5rem;
+  background:rgba(10,10,10,0.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.15rem;letter-spacing:0.08em;font-weight:300;
+  color:var(--blanc);text-decoration:none;text-transform:uppercase;
+}
+.logo span{color:var(--muted)}
+nav ul{list-style:none;display:flex;gap:2rem}
+nav ul li a{
+  font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+  font-weight:300;color:var(--muted);text-decoration:none;transition:color 0.3s;
+}
+nav ul li a:hover{color:var(--blanc)}
+
+/* burger mobile */
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;border:none;background:none;padding:4px}
+.burger span{display:block;width:22px;height:1px;background:var(--blanc);transition:all 0.3s}
+.mob-menu{
+  display:none;position:fixed;inset:0;z-index:99;
+  background:var(--fond);flex-direction:column;
+  align-items:center;justify-content:center;gap:2.5rem;
+}
+.mob-menu.open{display:flex}
+.mob-menu a{
+  font-size:1.5rem;font-weight:200;color:var(--blanc);
+  text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:5rem 2.5rem 4.5rem;
+  position:relative;overflow:hidden;
+}
+.hero-orb{
+  position:absolute;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);
+  top:-80px;right:-60px;pointer-events:none;
+}
+.hero-content{position:relative;z-index:1;max-width:820px}
+.hero-eyebrow{
+  display:flex;align-items:center;gap:0.75rem;
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--blanc);font-weight:400;margin-bottom:1.75rem;
+}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--blanc);flex-shrink:0}
+h1{
+  font-family:'DM Sans',sans-serif;
+  font-size:clamp(2.8rem,7vw,6.5rem);
+  font-weight:200;line-height:1;letter-spacing:-0.03em;
+  margin-bottom:1.75rem;color:var(--blanc);
+}
+h1 em{font-style:italic;color:var(--muted);font-weight:200}
+.hero-sub{
+  font-size:0.95rem;font-weight:300;color:var(--muted);
+  max-width:420px;line-height:1.8;margin-bottom:3rem;
+}
+.ctas{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn-main{
+  display:inline-block;padding:0.75rem 1.75rem;
+  background:var(--blanc);color:var(--fond);
+  font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:400;
+  text-decoration:none;border-radius:2px;transition:background 0.3s;
+}
+.btn-main:hover{background:var(--blanc-dim)}
+.btn-outline{
+  display:inline-block;padding:0.75rem 1.75rem;
+  border:1px solid var(--muted2);color:var(--muted);
+  font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:300;
+  text-decoration:none;border-radius:2px;transition:all 0.3s;
+}
+.btn-outline:hover{border-color:var(--blanc);color:var(--blanc)}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2.5rem}
+.label{
+  font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--blanc);font-weight:400;
+  display:flex;align-items:center;gap:0.75rem;margin-bottom:2.5rem;
+}
+.label::after{content:'';flex:0 0 2rem;height:1px;background:var(--muted2)}
+
+/* ── SERVICES ── */
+.services-bg{background:var(--fond2)}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.scard{background:var(--fond2);padding:2.25rem 1.5rem;transition:background 0.4s}
+.scard:hover{background:rgba(255,255,255,0.03)}
+.snum{font-size:0.58rem;letter-spacing:0.25em;color:var(--muted2);margin-bottom:1.25rem}
+.scard h3{font-size:1.05rem;font-weight:300;margin-bottom:0.75rem;color:var(--blanc)}
+.scard p{font-size:0.78rem;color:var(--muted);line-height:1.85;font-weight:300}
+
+/* ── GRILLE PROJETS ──
+   12 colonnes. Les classes indiquent la rangée et la position.
+   Rangée 1 : APACH pleine largeur (12 cols) — 16:9
+   Rangée 2 : VOGUE (7 cols 16:9) + TEAR (5 cols 16:9)
+   Rangée 3 : DIRTY (5 cols 16:9) + PRINCESS (4 cols 4:3) + THÉODORT (3 cols 1:1)
+   Rangée 4 : FLOW SANYMA (4 cols 3:2) + JUGG (4 cols 3:2) + A DBL SUI (4 cols 4:3)
+   Rangée 5 : S73 pleine largeur (12 cols) — 4:3
+*/
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:5px;
+}
+.pcard{
+  position:relative;overflow:hidden;
+  background:var(--fond3);cursor:pointer;
+  text-decoration:none;color:inherit;display:block;
+}
+.p-r1{grid-column:span 12; aspect-ratio:21/9}
+.p-r2a{grid-column:span 7; aspect-ratio:16/9}
+.p-r2b{grid-column:span 5; aspect-ratio:16/9}
+.p-r3a{grid-column:span 5; aspect-ratio:16/9}
+.p-r3b{grid-column:span 4; aspect-ratio:4/3}
+.p-r3c{grid-column:span 3; aspect-ratio:1/1}
+.p-r4a{grid-column:span 4; aspect-ratio:3/2}
+.p-r4b{grid-column:span 4; aspect-ratio:3/2}
+.p-r4c{grid-column:span 4; aspect-ratio:4/3}
+.p-r5{grid-column:span 12; aspect-ratio:32/9}
+
+.pvideo{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;background:#000;
+}
+.pthumb{
+  width:100%;height:100%;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 0.5s cubic-bezier(0.25,0,0,1);
+}
+.pcard:hover .pthumb{transform:scale(1.025)}
+.play-btn{
+  position:relative;z-index:2;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.25s;
+}
+.pcard:hover .play-btn{opacity:0}
+.play-btn svg{fill:#fff;width:12px;height:12px;margin-left:2px}
+.pinfo{
+  position:absolute;bottom:0;left:0;right:0;z-index:2;
+  background:linear-gradient(transparent,rgba(10,10,10,0.9));
+  padding:2rem 1rem 0.9rem;
+  opacity:0;transform:translateY(5px);
+  transition:all 0.28s ease;
+}
+.pcard:hover .pinfo{opacity:1;transform:translateY(0)}
+.pcat{font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem}
+.ptitle{font-size:0.85rem;font-weight:300;color:var(--blanc)}
+
+/* ── OVERLAY PAGE PROJET ── */
+.projet-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--fond);overflow-y:auto;
+}
+.projet-overlay.active{display:block}
+.projet-inner{max-width:1100px;margin:0 auto;padding:6rem 2.5rem 5rem}
+.projet-back{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;border:none;background:none;
+  transition:color 0.3s;font-family:'DM Sans',sans-serif;
+  margin-bottom:2.5rem;
+}
+.projet-back:hover{color:var(--blanc)}
+.projet-back svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5}
+.projet-video-wrap{
+  width:100%;background:#000;margin-bottom:2.5rem;
+}
+.projet-video-wrap video{width:100%;display:block;max-height:70vh;object-fit:contain}
+.projet-meta{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;
+  margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--line);
+}
+.projet-meta-item p:first-child{
+  font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:0.3rem;
+}
+.projet-meta-item p:last-child{font-size:0.9rem;font-weight:300;color:var(--blanc)}
+#projetTitre{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:200;letter-spacing:-0.02em;margin-bottom:1.25rem;line-height:1.1}
+#projetTitre em{font-style:italic;color:var(--muted)}
+.projet-desc{font-size:0.88rem;color:var(--muted);line-height:1.9;max-width:640px;font-weight:300}
+.projet-placeholder{
+  font-style:italic;color:var(--muted2);border:1px dashed var(--muted2);
+  padding:0.75rem 1.25rem;font-size:0.78rem;display:inline-block;margin-top:0.25rem;
+}
+
+/* ── ABOUT ── */
+.about-bg{background:var(--fond2)}
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:4rem;align-items:center}
+.photo-wrap{
+  aspect-ratio:3/4;background:var(--fond3);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.photo-wrap::before{
+  content:'';position:absolute;inset:0;
+  border:1px solid rgba(255,255,255,0.07);z-index:1;pointer-events:none;
+}
+.photo-ph{font-style:italic;font-weight:200;font-size:0.85rem;color:rgba(255,255,255,0.18);letter-spacing:0.1em}
+.about-text h2{font-size:clamp(1.7rem,3.5vw,3rem);font-weight:200;line-height:1.15;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.about-text h2 em{font-style:italic;color:var(--muted)}
+.about-text p{font-size:0.83rem;color:var(--muted);line-height:1.9;font-weight:300;margin-bottom:1.1rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin:1.75rem 0 2.25rem}
+.stat{padding-top:0.85rem;border-top:1px solid var(--line)}
+.sval{font-size:1.9rem;font-weight:200;color:var(--blanc);letter-spacing:-0.02em}
+.slbl{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:0.15rem;font-weight:300}
+
+/* ── CONTACT ── */
+.contact-wrap{max-width:520px;margin:0 auto;text-align:center}
+.contact-wrap h2{font-size:clamp(2rem,5vw,3.8rem);font-weight:200;line-height:1.1;margin-bottom:1rem;letter-spacing:-0.03em}
+.contact-wrap h2 em{font-style:italic;color:var(--muted)}
+.contact-wrap > p{font-size:0.8rem;color:var(--muted);line-height:1.85;margin-bottom:2.25rem}
+.mail{display:inline-block;font-style:italic;font-weight:200;font-size:1.2rem;color:var(--blanc);text-decoration:none;letter-spacing:0.02em;margin-bottom:2.5rem;transition:color 0.3s}
+.mail:hover{color:var(--muted)}
+.socials{display:flex;justify-content:center;gap:1.75rem;flex-wrap:wrap}
+.socials a{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:300;transition:color 0.3s}
+.socials a:hover{color:var(--blanc)}
+
+footer{padding:1.5rem 2.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem}
+footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);font-weight:300}
+
+/* ══════════════════════════════
+   RESPONSIVE MOBILE (≤768px)
+   ══════════════════════════════ */
+@media(max-width:768px){
+  /* Nav */
+  nav{padding:1rem 1.25rem}
+  nav ul{display:none}
+  .burger{display:flex}
+
+  /* Hero */
+  .hero{padding:5rem 1.25rem 3.5rem}
+  h1{font-size:clamp(2.4rem,11vw,3.8rem)}
+  .hero-sub{font-size:0.9rem;max-width:100%}
+  .ctas{flex-direction:column;align-items:flex-start}
+  .btn-main,.btn-outline{width:100%;text-align:center}
+
+  /* Sections */
+  section{padding:3.5rem 1.25rem}
+
+  /* Services : une colonne */
+  .services-grid{grid-template-columns:1fr;gap:1px}
+
+  /* Grille projets : 2 colonnes fixes sur mobile, ratios préservés */
+  .projects-grid{
+    grid-template-columns:1fr 1fr;
+    gap:4px;
+  }
+  /* Rangée 1 : APACH pleine largeur */
+  .p-r1{grid-column:span 2;aspect-ratio:16/9}
+  /* Rangée 2 : VOGUE + TEAR en 1+1 */
+  .p-r2a{grid-column:span 1;aspect-ratio:16/9}
+  .p-r2b{grid-column:span 1;aspect-ratio:16/9}
+  /* Rangée 3 : DIRTY + PRINCESS en 1+1, THÉODORT pleine largeur */
+  .p-r3a{grid-column:span 1;aspect-ratio:16/9}
+  .p-r3b{grid-column:span 1;aspect-ratio:4/3}
+  .p-r3c{grid-column:span 2;aspect-ratio:16/9}
+  /* Rangée 4 : les 3 en colonne */
+  .p-r4a{grid-column:span 2;aspect-ratio:16/9}
+  .p-r4b{grid-column:span 1;aspect-ratio:3/2}
+  .p-r4c{grid-column:span 1;aspect-ratio:4/3}
+  /* Rangée 5 : S73 pleine largeur */
+  .p-r5{grid-column:span 2;aspect-ratio:16/9}
+
+  /* About : une colonne, photo réduite */
+  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .photo-wrap{aspect-ratio:4/3;max-height:280px}
+  .stats{grid-template-columns:repeat(3,1fr)}
+
+  /* Page projet */
+  .projet-inner{padding:5rem 1.25rem 3rem}
+  .projet-meta{grid-template-columns:repeat(2,1fr);gap:1.25rem}
+}
+
+@media(max-width:480px){
+  /* Encore plus petit : tout en colonne */
+  .projects-grid{grid-template-columns:1fr;gap:4px}
+  .p-r1,.p-r2a,.p-r2b,.p-r3a,.p-r3b,.p-r3c,
+  .p-r4a,.p-r4b,.p-r4c,.p-r5{
+    grid-column:span 1;aspect-ratio:16/9;
+  }
+  .stats{grid-template-columns:1fr 1fr;gap:1rem}
+  .projet-meta{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── MENU MOBILE ── -->
+<div class="mob-menu" id="mobMenu">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#projets" onclick="closeMob()">Projets</a>
+  <a href="#about" onclick="closeMob()">À propos</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- ── OVERLAY PAGE PROJET ── -->
+<div class="projet-overlay" id="projetOverlay">
+  <div class="projet-inner">
+    <button class="projet-back" onclick="fermerProjet()">
+      <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+      Retour
+    </button>
+    <div class="projet-video-wrap">
+      <video id="projetVideo" controls playsinline preload="metadata">
+        <source id="projetVideoSrc" src="" type="video/mp4">
+      </video>
+    </div>
+    <h2 id="projetTitre"></h2>
+    <div class="projet-meta">
+      <div class="projet-meta-item"><p>Catégorie</p><p id="projetCat">—</p></div>
+      <div class="projet-meta-item"><p>Client</p><p id="projetClient">—</p></div>
+      <div class="projet-meta-item"><p>Année</p><p id="projetAnnee">—</p></div>
+      <div class="projet-meta-item"><p>Format</p><p id="projetFormat">—</p></div>
+    </div>
+    <p class="projet-desc" id="projetDesc"></p>
+  </div>
+</div>
+
+<!-- ── NAV ── -->
+<nav>
+  <img src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/gfdgf.png"
+     alt="Photo de Zelyok"
+     style="width:2%;height:2%;object-fit:cover;display:block;">
+  <a href="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/gfdgf.png" class="logo">Ze<span>lyght</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projets">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="burger" onclick="toggleMob()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO — modifie "Nancy" et les textes
+     ══════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <!-- Modifie "Nancy" → ta ville -->
+    <div class="hero-eyebrow"><span class="dot"></span>digital artist · Nancy</div>
+    <h1>The image<br>at the service of<br><em>your story.</em></h1>
+    <p class="hero-sub">I see, build and reveal visual narratives for brands, events and projects that are worth seeing.</p>
+    <div class="ctas">
+      <a href="#projets" class="btn-main">view my projects</a>
+      <a href="#contact" class="btn-outline">Working together</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     SERVICES — modifie les titres h3 et textes p
+     ══════════════════════════════════ -->
+<section class="services-bg" id="services">
+  <p class="label">What i do</p>
+  <div class="services-grid">
+    <div class="scard">
+      <p class="snum">01 /</p>
+      <h3>Motion Design</h3>
+      <p>Edits, animations, motion graphics. Content that brings your visual identity to life with rhythm and precision.</p>
+    </div>
+    <div class="scard">
+      <p class="snum">02 /</p>
+      <h3>Branding Video</h3>
+      <p>Animated logos, intros, identities in motion. The first impression that stays in your mind.</p>
+    </div>
+    <div class="scard">
+      <p class="snum">03 /</p>
+      <h3>social content</h3>
+      <p>Reels, short clips, content in network formats. Designed for impact and engagement on each platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PROJETS — 10 vidéos, grille organisée
+     Modifie les data-* pour chaque projet
+     ══════════════════════════════════ -->
+<section id="projects">
+  <p class="label">Projects</p>
+  <div class="projects-grid">
+
+    <!-- R1 : APACH — pleine largeur, vedette -->
+    <div class="pcard p-r1"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/ANIMATION%20LOGO%20-%20APACH.mp4"
+      data-titre="Animation Logo — Apach"
+      data-cat="Branding"
+      data-client="Apach"
+      data-annee="2026"
+      data-format="1920×1080 — 16:9"
+      data-desc="À remplir — décris ici le projet, le brief, les choix créatifs et le résultat.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/ANIMATION%20LOGO%20-%20APACH.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Branding</p><p class="ptitle">Animation Logo — Apach</p></div>
+    </div>
+
+    <!-- R2 : VOGUE (large) + TEAR -->
+    <div class="pcard p-r2a"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/VOGUE%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
+      data-titre="Vogue Edit Mograph — Sanyma"
+      data-cat="Mograph 4K"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="3840×2160 — 4K 16:9"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/VOGUE%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Vogue Edit — Sanyma</p></div>
+    </div>
+
+    <div class="pcard p-r2b"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/TEAR%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
+      data-titre="Tear Edit Mograph — Sanyma"
+      data-cat="Mograph 4K"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="3840×2160 — 4K 16:9"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/TEAR%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Tear Edit — Sanyma</p></div>
+    </div>
+
+    <!-- R3 : DIRTY + PRINCESS + THÉODORT -->
+    <div class="pcard p-r3a"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/DIRTY%20edit%20mograph.flow%20style%20-%20sanyma%204K.mp4"
+      data-titre="Dirty Edit Mograph — Sanyma"
+      data-cat="Mograph 4K"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="3840×2160 — 4K 16:9"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/DIRTY%20edit%20mograph.flow%20style%20-%20sanyma%204K.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Dirty Edit — Sanyma</p></div>
+    </div>
+
+    <div class="pcard p-r3b"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/PRINCESS%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
+      data-titre="Princess Edit Mograph — Sanyma"
+      data-cat="Mograph 4K"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="2800×2160 — 4K"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/PRINCESS%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Princess Edit — Sanyma</p></div>
+    </div>
+
+    <div class="pcard p-r3c"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20th%C3%A9odort.mp4"
+      data-titre="Edit Flow Style — Théodort"
+      data-cat="Mograph"
+      data-client="Théodort"
+      data-annee="2026"
+      data-format="1080×1080 — Carré"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20th%C3%A9odort.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Flow Style — Théodort</p></div>
+    </div>
+
+    <!-- R4 : FLOW SANYMA + JUGG + A DOUBLE SUI -->
+    <div class="pcard p-r4a"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20sanyma.mp4"
+      data-titre="Edit Flow Style — Sanyma"
+      data-cat="Mograph"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="1600×1080 — 3:2"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20sanyma.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Flow Style — Sanyma</p></div>
+    </div>
+
+    <div class="pcard p-r4b"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20jugg%20style%20-%20sanyma.mp4"
+      data-titre="Edit Jugg Style — Sanyma"
+      data-cat="Mograph"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="1208×784 — 3:2"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20jugg%20style%20-%20sanyma.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Jugg Style — Sanyma</p></div>
+    </div>
+
+    <div class="pcard p-r4c"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/A%20double%20Sui%20-%20edit%20mograph%20style%20-%20sanyma.mp4"
+      data-titre="A Double Sui — Edit Mograph"
+      data-cat="Mograph"
+      data-client="Sanyma"
+      data-annee="2026"
+      data-format="1400×1080 — 4:3"
+      data-desc="À remplir.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/A%20double%20Sui%20-%20edit%20mograph%20style%20-%20sanyma.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">A Double Sui — Sanyma</p></div>
+    </div>
+
+    <!-- R5 : S73 — pleine largeur, clôture -->
+    <div class="pcard p-r5"
+      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20mograph%20style%20S73.mp4"
+      data-titre="Edit Mograph Style — S73"
+      data-cat="Mograph"
+      data-client="S73"
+      data-annee="2026"
+      data-format="1400×1080 — 4:3"
+      data-desc="edit made on Adobe After Effects for the content creator S73.">
+      <div class="pthumb">
+        <video class="pvideo" muted loop playsinline preload="metadata"
+          onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0">
+          <source src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20mograph%20style%20S73.mp4" type="video/mp4">
+        </video>
+        <div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14"/></svg></div>
+      </div>
+      <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Edit Mograph — S73</p></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     À PROPOS — modifie [Ton Prénom], [X], les stats
+     ══════════════════════════════════ -->
+<section class="about-bg" id="about">
+  <p class="label">About</p>
+  <div class="about-grid">
+    <div class="photo-wrap">
+      <!-- Remplace par : <img src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/pfp%20zelok.png" style="width:100%;height:100%;object-fit:cover;display:block"> -->
+      <img src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/pfp%20zelok.png"
+     alt="Photo de Zelyok"
+     style="width:100%;height:100%;object-fit:cover;display:block;">
+    </div>
+    <div class="about-text">
+      <h2>Digital artist<br><em>motion designer</em><br>& filmaker</h2>
+      <p>I am Zelok, a french artist based in Nancy. Since June 2026, I have been supporting brands, artists, and individuals in creating video content that leaves a lasting impression.</p>
+      <p>My approach: attentive listening to your needs, careful artistic direction, and technical mastery in the service of emotion.</p>
+      <div class="stats">
+        <div class="stat"><p class="sval">+20</p><p class="slbl">Projects</p></div>
+        <div class="stat"><p class="sval">1 year</p><p class="slbl">Experience</p></div>
+        <div class="stat"><p class="sval">100%</p><p class="slbl">Satisfaction</p></div>
+      </div>
+      <a href="#contact" class="btn-main">Start a project together</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     CONTACT — modifie l'email et les href="#"
+     ══════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-wrap">
+    <p class="label" style="justify-content:center">Contact</p>
+    <h2>Give a life<br>to your <em>vision</em></h2>
+    <p>You have a project in your mind ? Stop waiting, come ask me :)</p>
+    <a href="mailto:z3lokfx@gmail.com" class="mail">z3lokfx@gmail.com</a>
+    <div class="socials">
+      <a href="https://www.instagram.com/zelokforever/" target="_blank">Instagram</a>
+      <a href="https://www.youtube.com/@zelok.mp4" target="_blank">YouTube</a>
+      <a href="https://www.tiktok.com/@zelok.fx?lang=en" target="_blank">TikTok</a>
+      <a href="https://vimeo.com/user260532329" target="_blank">Vimeo</a>
+      <a href="https://discord.gg/EeknqZ8m9" target="_blank">Discord</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Zelok — Digital-artist</p>
+  <p>Nancy, France</p>
+</footer>
+
+<script>
+// ── Menu burger mobile ──
+function toggleMob(){
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function closeMob(){
+  document.getElementById('mobMenu').classList.remove('open');
+}
+
+// ── Ouverture page projet au clic ──
+document.querySelectorAll('.pcard').forEach(function(card){
+  card.addEventListener('click', function(){
+    var src    = card.dataset.src    || '';
+    var titre  = card.dataset.titre  || 'Projet';
+    var cat    = card.dataset.cat    || '—';
+    var client = card.dataset.client || '—';
+    var annee  = card.dataset.annee  || '—';
+    var format = card.dataset.format || '—';
+    var desc   = card.dataset.desc   || '';
+
+    // Stoppe la preview hover
+    var v = card.querySelector('video');
+    if(v){ v.pause(); v.currentTime = 0; }
+
+    // Remplit l'overlay
+    var src_el = document.getElementById('projetVideoSrc');
+    src_el.src = src;
+    src_el.type = src.endsWith('.avi') ? 'video/avi' : 'video/mp4';
+    var pv = document.getElementById('projetVideo');
+    pv.load(); pv.play();
+
+    document.getElementById('projetTitre').textContent  = titre;
+    document.getElementById('projetCat').textContent    = cat;
+    document.getElementById('projetClient').textContent = client;
+    document.getElementById('projetAnnee').textContent  = annee;
+    document.getElementById('projetFormat').textContent = format;
+
+    var descEl = document.getElementById('projetDesc');
+    if(!desc || desc === 'À remplir.'){
+      descEl.innerHTML = '<span class="projet-placeholder">Description à remplir — cherche data-desc="..." dans le HTML pour ce projet.</span>';
+    } else {
+      descEl.textContent = desc;
+    }
+
+    document.getElementById('projetOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    window.scrollTo(0,0);
+  });
+});
+
+// ── Fermeture page projet ──
+function fermerProjet(){
+  var pv = document.getElementById('projetVideo');
+  pv.pause(); pv.currentTime = 0;
+  document.getElementById('projetOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') fermerProjet();
+});
+</script>
+</body>
+</html>
