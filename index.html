@@ -657,62 +657,62 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 </footer>
 
 <script>
+<script>
 // ══════════════════════════════════════
-// 1. LAZY LOADING VIDÉOS
-// Les vidéos ne se chargent que quand elles approchent du viewport
-// → évite de télécharger 9 vidéos 4K en même temps au chargement
+// 1. LAZY LOADING + HOVER PLAY
 // ══════════════════════════════════════
 (function() {
-  // Retire preload="metadata" et met preload="none" sur toutes les vidéos
-  // On stocke la vraie source dans data-src sur la balise <source>
-  document.querySelectorAll('.pvideo').forEach(function(video) {
-    video.setAttribute('preload', 'none');
+
+  function loadVideo(video) {
     var source = video.querySelector('source');
-    if (source) {
-      source.dataset.lazysrc = source.getAttribute('src');
-      source.removeAttribute('src');
+    if (source && source.dataset.lazysrc && !source.getAttribute('src')) {
+      source.setAttribute('src', source.dataset.lazysrc);
+      video.load();
+      return true; // vient d'être chargée
     }
-  });
+    return false; // déjà chargée
+  }
 
-  // IntersectionObserver : charge la vidéo quand la carte est proche (200px avant)
-  var lazyIO = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        var video = entry.target;
-        var source = video.querySelector('source');
-        if (source && source.dataset.lazysrc && !source.getAttribute('src')) {
-          source.setAttribute('src', source.dataset.lazysrc);
-          video.load();
-        }
-        lazyIO.unobserve(video);
-      }
-    });
-  }, {
-    rootMargin: '200px 0px' // commence à charger 200px avant l'entrée
-  });
-
-  document.querySelectorAll('.pvideo').forEach(function(v) {
-    lazyIO.observe(v);
-  });
-
-  // Hover play/pause — réattaché proprement après lazy load
+  // Hover sur la carte : charge si besoin puis joue
   document.querySelectorAll('.pcard').forEach(function(card) {
     var video = card.querySelector('.pvideo');
     if (!video) return;
+
     card.addEventListener('mouseenter', function() {
-      var source = video.querySelector('source');
-      // Si pas encore chargée, charge d'abord
-      if (source && source.dataset.lazysrc && !source.getAttribute('src')) {
-        source.setAttribute('src', source.dataset.lazysrc);
-        video.load();
+      var justLoaded = loadVideo(video);
+      if (justLoaded) {
+        // Attend que les données soient prêtes avant de jouer
+        video.addEventListener('canplay', function onCanPlay() {
+          video.play().catch(function(){});
+          video.removeEventListener('canplay', onCanPlay);
+        });
+      } else {
+        video.play().catch(function(){});
       }
-      video.play().catch(function(){});
     });
+
     card.addEventListener('mouseleave', function() {
       video.pause();
       video.currentTime = 0;
     });
   });
+
+  // Précharge en avance les vidéos proches du viewport (200px avant)
+  var lazyIO = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        loadVideo(entry.target);
+        lazyIO.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '200px 0px' });
+
+  document.querySelectorAll('.pvideo').forEach(function(v) {
+    lazyIO.observe(v);
+  });
+
+})();
+
 
   // Supprime les onmouseenter/onmouseleave inline pour éviter les doublons
   document.querySelectorAll('.pvideo').forEach(function(v) {
