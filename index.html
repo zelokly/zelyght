@@ -123,6 +123,8 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   .btn-main,.btn-outline{width:100%;text-align:center}
   section{padding:3.5rem 1.25rem}
   .services-grid{grid-template-columns:1fr;gap:1px}
+  /* espacement plus généreux entre les rangées de projets sur mobile */
+  .projects-grid{gap:10px}
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
   .photo-wrap{aspect-ratio:4/3;max-height:280px}
   .stats{grid-template-columns:repeat(3,1fr)}
@@ -344,24 +346,45 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 
   var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 
+  // Stoppe une vidéo ET réaffiche son poster
+  function stopVideo(video) {
+    video.pause();
+    video.removeAttribute('src');
+    var source = video.querySelector('source');
+    if (source) source.removeAttribute('src');
+    video.load(); // force le retour au poster
+  }
+
   // PC : hover
   if (!isTouch) {
     document.querySelectorAll('.pcard').forEach(function(card) {
       var video = card.querySelector('.pvideo');
       if (!video) return;
       card.addEventListener('mouseenter', function() { playVideo(video); });
-      card.addEventListener('mouseleave', function() { video.pause(); video.currentTime = 0; });
+      card.addEventListener('mouseleave', function() { stopVideo(video); });
     });
   }
 
-  // Mobile : autoplay au centre
+  // Mobile : une seule vidéo active à la fois, au centre de l'écran
   if (isTouch) {
+    var activeVideo = null; // référence à la vidéo en cours
     var centerIO = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         var video = entry.target.querySelector('.pvideo');
         if (!video) return;
-        if (entry.isIntersecting) { playVideo(video); }
-        else { video.pause(); video.currentTime = 0; }
+        if (entry.isIntersecting) {
+          // Stoppe et remet le poster de la précédente
+          if (activeVideo && activeVideo !== video) {
+            stopVideo(activeVideo);
+          }
+          activeVideo = video;
+          playVideo(video);
+        } else {
+          if (activeVideo === video) {
+            stopVideo(video);
+            activeVideo = null;
+          }
+        }
       });
     }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
     document.querySelectorAll('.pcard').forEach(function(c) { centerIO.observe(c); });
@@ -382,9 +405,9 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   // ── Overlay projet ──
   document.querySelectorAll('.pcard').forEach(function(card) {
     card.addEventListener('click', function() {
-      // Stoppe la preview
-      var pv = card.querySelector('video');
-      if (pv) { pv.pause(); pv.currentTime = 0; }
+      // Stoppe et remet le poster de la preview
+      var pv = card.querySelector('.pvideo');
+      if (pv) stopVideo(pv);
 
       var titre  = card.dataset.titre  || '';
       var cat    = card.dataset.cat    || '—';
@@ -443,4 +466,3 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 </script>
 </body>
 </html>
-
