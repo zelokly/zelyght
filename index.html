@@ -63,7 +63,7 @@ section{padding:5rem 0}
 .pthumb{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;transition:transform 0.5s cubic-bezier(0.25,0,0,1)}
 .pcard:hover .pthumb{transform:scale(1.025)}
 .pinfo{position:absolute;bottom:0;left:0;right:0;z-index:2;background:linear-gradient(transparent,rgba(10,10,10,0.9));padding:2rem 1rem 0.9rem;opacity:0;transform:translateY(5px);transition:all 0.28s ease}
-.pcard:hover .pinfo{opacity:1;transform:translateY(0)}
+.pcard:hover .pcard.playing .pinfo{opacity:1;transform:translateY(0)}
 .pcat{font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem}
 .ptitle{font-size:0.85rem;font-weight:300;color:var(--blanc)}
 
@@ -115,6 +115,7 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 
 @media(max-width:768px){
   nav{padding:1rem 1.25rem}
+  nav img{width:5% !important;height:auto}
   nav ul{display:none}
   .burger{display:flex}
   .hero{padding:5rem 1.25rem 3.5rem}
@@ -377,9 +378,11 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
           // Stoppe et remet le poster de la précédente
           if (activeVideo && activeVideo !== video) {
             stopVideo(activeVideo);
+            entry.target.classList.remove('playing');
           }
           activeVideo = video;
           playVideo(video);
+          entry.target.classList.add('playing');
         } else {
           if (activeVideo === video) {
             stopVideo(video);
