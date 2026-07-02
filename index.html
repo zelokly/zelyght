@@ -8,10 +8,7 @@
 <link rel="icon" href="logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --fond:#0a0a0a;--fond2:#111111;--fond3:#1a1a1a;
-  --blanc:#ffffff;--blanc-dim:#e5e5e5;--muted:#8a8a8a;--muted2:#4a4a4a;--line:#222222;
-}
+:root{--fond:#0a0a0a;--fond2:#111111;--fond3:#1a1a1a;--blanc:#ffffff;--blanc-dim:#e5e5e5;--muted:#8a8a8a;--muted2:#4a4a4a;--line:#222222}
 html{scroll-behavior:smooth}
 body{background:var(--fond);color:var(--blanc);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden}
 
@@ -40,7 +37,7 @@ h1 em{font-style:italic;color:var(--muted);font-weight:200}
 .btn-outline:hover{border-color:var(--blanc);color:var(--blanc)}
 
 section{padding:5rem 0}
-  #projects{padding-left:0;padding-right:0}
+#projects{padding-left:0;padding-right:0}
 .label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--blanc);font-weight:400;display:flex;align-items:center;gap:0.75rem;margin-bottom:2.5rem}
 .label::after{content:'';flex:0 0 2rem;height:1px;background:var(--muted2)}
 
@@ -58,34 +55,26 @@ section{padding:5rem 0}
 .g-third{grid-column:span 2;aspect-ratio:3/2}
 .g-full{grid-column:span 6;aspect-ratio:2400/900}
 .g-half{grid-column:span 3;aspect-ratio:1200/650}
-
 .pvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
 .pthumb{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;transition:transform 0.5s cubic-bezier(0.25,0,0,1)}
 .pcard:hover .pthumb{transform:scale(1.025)}
+
+/* Bandeau info — caché par défaut, visible au hover PC ou classe .playing mobile */
 .pinfo{position:absolute;bottom:0;left:0;right:0;z-index:2;background:linear-gradient(transparent,rgba(10,10,10,0.9));padding:2rem 1rem 0.9rem;opacity:0;transform:translateY(5px);transition:all 0.28s ease}
-.pcard:hover .pinfo,
-.pcard.playing .pinfo {
-    opacity: 1;
-    transform: translateY(0);
-}
+.pcard:hover .pinfo{opacity:1;transform:translateY(0)}
 .pcat{font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem}
 .ptitle{font-size:0.85rem;font-weight:300;color:var(--blanc)}
 
-/* OVERLAY PAGE PROJET */
 .projet-overlay{display:none;position:fixed;inset:0;z-index:200;background:var(--fond);overflow-y:auto}
 .projet-overlay.active{display:block}
 .projet-inner{max-width:1100px;margin:0 auto;padding:6rem 2.5rem 5rem}
 .projet-back{display:inline-flex;align-items:center;gap:0.6rem;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);cursor:pointer;border:none;background:none;transition:color 0.3s;font-family:'DM Sans',sans-serif;margin-bottom:2.5rem}
 .projet-back:hover{color:var(--blanc)}
 .projet-back svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5}
-
-/* Wrap vidéo — supporte soit <video> soit embed Vimeo */
 .projet-video-wrap{width:100%;background:#000;margin-bottom:2.5rem}
 .projet-video-wrap video{width:100%;display:block;max-height:70vh;object-fit:contain}
-/* Vimeo responsive */
 .vimeo-wrap{padding:56.25% 0 0 0;position:relative}
 .vimeo-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%}
-
 .projet-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--line)}
 .projet-meta-item p:first-child{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem}
 .projet-meta-item p:last-child{font-size:0.9rem;font-weight:300;color:var(--blanc)}
@@ -113,13 +102,12 @@ section{padding:5rem 0}
 .socials{display:flex;justify-content:center;gap:1.75rem;flex-wrap:wrap}
 .socials a{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:300;transition:color 0.3s}
 .socials a:hover{color:var(--blanc)}
-
 footer{padding:1.5rem 2.5rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem}
 footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);font-weight:300}
 
 @media(max-width:768px){
   nav{padding:1rem 1.25rem}
-  nav img{width:7% !important;height:auto}
+  nav img{width:5% !important;height:auto}
   nav ul{display:none}
   .burger{display:flex}
   .hero{padding:5rem 1.25rem 3.5rem}
@@ -129,15 +117,14 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   .btn-main,.btn-outline{width:100%;text-align:center}
   section{padding:3.5rem 1.25rem}
   .services-grid{grid-template-columns:1fr;gap:1px}
-  /* espacement plus généreux entre les rangées de projets sur mobile */
-  .projects-grid{gap:20px}
+  .projects-grid{gap:10px}
+  /* Sur mobile : bandeau visible UNIQUEMENT quand .playing (vidéo en cours) */
+  .pcard.playing .pinfo{opacity:1;transform:translateY(0)}
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
   .photo-wrap{aspect-ratio:4/3;max-height:280px}
   .stats{grid-template-columns:repeat(3,1fr)}
   .projet-inner{padding:5rem 1.25rem 3rem}
   .projet-meta{grid-template-columns:repeat(2,1fr);gap:1.25rem}
-  /* pinfo toujours visible sur mobile */
-  .pinfo{opacity:1;transform:translateY(0)}
 }
 @media(max-width:480px){
   .stats{grid-template-columns:1fr 1fr;gap:1rem}
@@ -154,13 +141,11 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
-<!-- OVERLAY PROJET — contenu injecté dynamiquement -->
 <div class="projet-overlay" id="projetOverlay">
   <div class="projet-inner">
     <button class="projet-back" onclick="fermerProjet()">
       <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>Retour
     </button>
-    <!-- Zone vidéo : soit <video> soit iframe Vimeo selon le projet -->
     <div class="projet-video-wrap" id="projetVideoWrap"></div>
     <h2 id="projetTitre"></h2>
     <div class="projet-meta">
@@ -210,70 +195,47 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   <p class="label">Projects</p>
   <div class="projects-grid">
 
-    <!-- data-vimeo = ID Vimeo → ouvre embed. Sans data-vimeo → ouvre le mp4 via data-src -->
-
-    <div class="pcard g-cinema"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/VOGUE%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
-      data-vimeo="1206290765"
-      data-titre="Vogue Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : VOGUE - Fimiguerrero">
+    <div class="pcard g-cinema" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/VOGUE%20edit%20mograph%20style%20-%20sanyma%204K.mp4" data-vimeo="1206290765" data-titre="Vogue Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : VOGUE - Fimiguerrero">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/vogue.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/VOGUE%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Vogue Edit — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-cinema"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/TEAR%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
-      data-vimeo="1205857559"
-      data-titre="Tear Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : TEAR - The Smashing Pumpkins">
+    <div class="pcard g-cinema" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/TEAR%20edit%20mograph%20style%20-%20sanyma%204K.mp4" data-vimeo="1205857559" data-titre="Tear Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : TEAR - The Smashing Pumpkins">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/tear.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/TEAR%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Tear Edit — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-cinema"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/DIRTY%20edit%20mograph.flow%20style%20-%20sanyma%204K.mp4"
-      data-vimeo="1205866939"
-      data-titre="Dirty Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : DIRTY - EsDeeKid">
+    <div class="pcard g-cinema" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/DIRTY%20edit%20mograph.flow%20style%20-%20sanyma%204K.mp4" data-vimeo="1205866939" data-titre="Dirty Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="3840×2160 — 4K 16:9" data-desc="Song : DIRTY - EsDeeKid">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/dirty.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/DIRTY%20edit%20mograph.flow%20style%20-%20sanyma%204K.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Dirty Edit — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-third"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/PRINCESS%20edit%20mograph%20style%20-%20sanyma%204K.mp4"
-      data-titre="Princess Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="2800×2160 — 4K" data-desc="Song : PRINCESS - Feng">
+    <div class="pcard g-third" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/PRINCESS%20edit%20mograph%20style%20-%20sanyma%204K.mp4" data-titre="Princess Edit Mograph — Sanyma" data-cat="Mograph 4K" data-client="Sanyma" data-annee="2026" data-format="2800×2160 — 4K" data-desc="Song : PRINCESS - Feng">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/princess.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/PRINCESS%20edit%20mograph%20style%20-%20sanyma%204K.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph 4K</p><p class="ptitle">Princess Edit — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-third"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/A%20double%20Sui%20-%20edit%20mograph%20style%20-%20sanyma.mp4"
-      data-titre="A Double Sui — Edit Mograph" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1400×1080 — 4:3" data-desc="Song : A Double Sui - Sheena Ringo">
+    <div class="pcard g-third" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/A%20double%20Sui%20-%20edit%20mograph%20style%20-%20sanyma.mp4" data-titre="A Double Sui — Edit Mograph" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1400×1080 — 4:3" data-desc="Song : A Double Sui - Sheena Ringo">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/doublesui.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/A%20double%20Sui%20-%20edit%20mograph%20style%20-%20sanyma.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">A Double Sui — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-third"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20mograph%20style%20S73.mp4"
-      data-titre="Edit Mograph Style — S73" data-cat="Mograph" data-client="S73" data-annee="2026" data-format="1400×1080 — 4:3" data-desc="edit made on Adobe After Effects for the content creator S73.">
+    <div class="pcard g-third" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20mograph%20style%20S73.mp4" data-titre="Edit Mograph Style — S73" data-cat="Mograph" data-client="S73" data-annee="2026" data-format="1400×1080 — 4:3" data-desc="edit made on Adobe After Effects for the content creator S73.">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/s73.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20mograph%20style%20S73.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Edit Mograph — S73</p></div>
     </div>
 
-    <div class="pcard g-full"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/ANIMATION%20LOGO%20-%20APACH.mp4"
-      data-titre="Animation Logo — Apach" data-cat="Branding" data-client="Apach" data-annee="2026" data-format="1920×1080 — 16:9" data-desc="logo animation for Apach">
+    <div class="pcard g-full" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/ANIMATION%20LOGO%20-%20APACH.mp4" data-titre="Animation Logo — Apach" data-cat="Branding" data-client="Apach" data-annee="2026" data-format="1920×1080 — 16:9" data-desc="logo animation for Apach">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/apach.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/ANIMATION%20LOGO%20-%20APACH.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Branding</p><p class="ptitle">Animation Logo — Apach</p></div>
     </div>
 
-    <div class="pcard g-half"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20sanyma.mp4"
-      data-titre="Edit Flow Style — Sanyma" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1600×1080 — 3:2" data-desc="Song : Nope Your Too Late I Already Died - wifiskeleton">
+    <div class="pcard g-half" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20sanyma.mp4" data-titre="Edit Flow Style — Sanyma" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1600×1080 — 3:2" data-desc="Song : Nope Your Too Late I Already Died - wifiskeleton">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/flowsanyma.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20flow%20style%20-%20sanyma.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Flow Style — Sanyma</p></div>
     </div>
 
-    <div class="pcard g-half"
-      data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20jugg%20style%20-%20sanyma.mp4"
-      data-titre="Edit Jugg Style — Sanyma" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1208×784 — 3:2" data-desc="Song : Lovergirl - Saturra">
+    <div class="pcard g-half" data-src="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20jugg%20style%20-%20sanyma.mp4" data-titre="Edit Jugg Style — Sanyma" data-cat="Mograph" data-client="Sanyma" data-annee="2026" data-format="1208×784 — 3:2" data-desc="Song : Lovergirl - Saturra">
       <div class="pthumb"><video class="pvideo" muted loop playsinline preload="none" poster="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/jugg.jpg"><source data-lazysrc="https://pub-5acfa381749d4ad5beb801edae58d606.r2.dev/edit%20jugg%20style%20-%20sanyma.mp4" type="video/mp4"></video></div>
       <div class="pinfo"><p class="pcat">Mograph</p><p class="ptitle">Jugg Style — Sanyma</p></div>
     </div>
@@ -327,7 +289,6 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
 (function() {
   'use strict';
 
-  // ── Lazy loading + hover PC + autoplay centre mobile ──
   function loadVideo(video) {
     var source = video.querySelector('source[data-lazysrc]');
     if (source && !source.getAttribute('src')) {
@@ -350,18 +311,17 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
     }
   }
 
-  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-
-  // Stoppe une vidéo ET réaffiche son poster
+  // Stoppe + réaffiche le poster en retirant la src et en appelant load()
   function stopVideo(video) {
     video.pause();
-    video.removeAttribute('src');
     var source = video.querySelector('source');
     if (source) source.removeAttribute('src');
-    video.load(); // force le retour au poster
+    video.load();
   }
 
-  // PC : hover
+  var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+  // PC : hover play/pause + poster
   if (!isTouch) {
     document.querySelectorAll('.pcard').forEach(function(card) {
       var video = card.querySelector('.pvideo');
@@ -371,30 +331,35 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
     });
   }
 
-  // Mobile : une seule vidéo active à la fois, au centre de l'écran
+  // Mobile : une seule vidéo à la fois, au centre du viewport
+  // Bandeau .pinfo visible seulement quand .playing sur la carte
   if (isTouch) {
-    var activeVideo = null; // référence à la vidéo en cours
+    var activeCard = null;
     var centerIO = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
-        var video = entry.target.querySelector('.pvideo');
+        var card = entry.target;
+        var video = card.querySelector('.pvideo');
         if (!video) return;
         if (entry.isIntersecting) {
-          // Stoppe et remet le poster de la précédente
-          if (activeVideo && activeVideo !== video) {
-            stopVideo(activeVideo);
-            entry.target.classList.remove('playing');
+          // Stoppe et nettoie la carte précédente
+          if (activeCard && activeCard !== card) {
+            var prevVideo = activeCard.querySelector('.pvideo');
+            if (prevVideo) stopVideo(prevVideo);
+            activeCard.classList.remove('playing');
           }
-          activeVideo = video;
+          activeCard = card;
+          card.classList.add('playing');
           playVideo(video);
-          entry.target.classList.add('playing');
         } else {
-          if (activeVideo === video) {
+          if (activeCard === card) {
             stopVideo(video);
-            activeVideo = null;
+            card.classList.remove('playing');
+            activeCard = null;
           }
         }
       });
     }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+
     document.querySelectorAll('.pcard').forEach(function(c) { centerIO.observe(c); });
   }
 
@@ -406,28 +371,24 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   }, { rootMargin: '300px 0px' });
   document.querySelectorAll('.pvideo').forEach(function(v) { preloadIO.observe(v); });
 
-  // ── Nav burger ──
+  // Nav burger
   window.toggleMob = function() { document.getElementById('mobMenu').classList.toggle('open'); };
   window.closeMob  = function() { document.getElementById('mobMenu').classList.remove('open'); };
 
-  // ── Overlay projet ──
+  // Overlay projet
   document.querySelectorAll('.pcard').forEach(function(card) {
     card.addEventListener('click', function() {
-      // Stoppe et remet le poster de la preview
       var pv = card.querySelector('.pvideo');
       if (pv) stopVideo(pv);
+      if (card.classList.contains('playing')) {
+        card.classList.remove('playing');
+        activeCard = null;
+      }
 
-      var titre  = card.dataset.titre  || '';
-      var cat    = card.dataset.cat    || '—';
-      var client = card.dataset.client || '—';
-      var annee  = card.dataset.annee  || '—';
-      var format = card.dataset.format || '—';
-      var desc   = card.dataset.desc   || '';
-      var vimeo  = card.dataset.vimeo  || '';
-      var src    = card.dataset.src    || '';
+      var vimeo = card.dataset.vimeo || '';
+      var src   = card.dataset.src   || '';
+      var wrap  = document.getElementById('projetVideoWrap');
 
-      // Zone vidéo : Vimeo si dispo, sinon mp4
-      var wrap = document.getElementById('projetVideoWrap');
       if (vimeo) {
         wrap.innerHTML =
           '<div class="vimeo-wrap">' +
@@ -441,17 +402,16 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
       } else {
         wrap.innerHTML =
           '<video controls playsinline preload="metadata" style="width:100%;display:block;max-height:70vh;object-fit:contain">' +
-          '<source src="' + src + '" type="video/mp4">' +
-          '</video>';
+          '<source src="' + src + '" type="video/mp4"></video>';
         wrap.querySelector('video').play().catch(function(){});
       }
 
-      document.getElementById('projetTitre').textContent  = titre;
-      document.getElementById('projetCat').textContent    = cat;
-      document.getElementById('projetClient').textContent = client;
-      document.getElementById('projetAnnee').textContent  = annee;
-      document.getElementById('projetFormat').textContent = format;
-      document.getElementById('projetDesc').textContent   = desc;
+      document.getElementById('projetTitre').textContent  = card.dataset.titre  || '';
+      document.getElementById('projetCat').textContent    = card.dataset.cat    || '—';
+      document.getElementById('projetClient').textContent = card.dataset.client || '—';
+      document.getElementById('projetAnnee').textContent  = card.dataset.annee  || '—';
+      document.getElementById('projetFormat').textContent = card.dataset.format || '—';
+      document.getElementById('projetDesc').textContent   = card.dataset.desc   || '';
 
       document.getElementById('projetOverlay').classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -460,7 +420,6 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   });
 
   window.fermerProjet = function() {
-    // Vide la zone vidéo pour stopper Vimeo et libérer la mémoire
     document.getElementById('projetVideoWrap').innerHTML = '';
     document.getElementById('projetOverlay').classList.remove('active');
     document.body.style.overflow = '';
