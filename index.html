@@ -118,6 +118,13 @@ footer p{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:
   section{padding:3.5rem 1.25rem}
   .services-grid{grid-template-columns:1fr;gap:1px}
   .projects-grid{gap:10px}
+  /* Mobile : tout en pleine largeur à la suite */
+  /* Cinéma 16:9 gardent leur crop 2400×650 */
+  .g-cinema{grid-column:span 6;aspect-ratio:2400/650}
+  /* 3:2 et 4:3 → recropés en 16:9, pleine largeur */
+  .g-third{grid-column:span 6;aspect-ratio:16/9}
+  .g-full{grid-column:span 6;aspect-ratio:16/9}
+  .g-half{grid-column:span 6;aspect-ratio:16/9}
   /* Sur mobile : bandeau visible UNIQUEMENT quand .playing (vidéo en cours) */
   .pcard.playing .pinfo{opacity:1;transform:translateY(0)}
   .about-grid{grid-template-columns:1fr;gap:2.5rem}
